@@ -177,7 +177,7 @@ class EcountClient:
             "safebrowsing.enabled": True,
         }
         options.add_experimental_option("prefs", prefs)
-        options.add_argument("--start-maximized")
+        options.add_argument("--window-size=1920,1080")
         options.add_argument("--disable-notifications")
 
         service = Service(ChromeDriverManager().install())
@@ -485,4 +485,4 @@ if __name__ == "__main__":
     except Exception as e:
         print(f"\n❌ 실행 중 오류가 발생했습니다: {e}")
     finally:
-        input("\n종료하려면 Enter를 누르세요...")
+        pass # input("\n종료하려면 Enter를 누르세요...")

@@ -123,7 +123,7 @@ def build_driver(dl_dir):
     options.add_argument("--headless")
     options.add_argument("--no-sandbox")
     options.add_argument("--disable-dev-shm-usage")
-    options.add_argument("--start-maximized")
+    options.add_argument("--window-size=1920,1080")
     prefs = {
         "download.default_directory": dl_dir,
         "download.prompt_for_download": False,
@@ -384,4 +384,4 @@ if __name__ == "__main__":
     except Exception as e:
         print(f"\n❌ 실행 중 오류가 발생했습니다: {e}")
     finally:
-        input("\n종료하려면 Enter를 누르세요...")
+        pass # input("\n종료하려면 Enter를 누르세요...")
