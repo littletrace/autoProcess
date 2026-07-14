@@ -11,10 +11,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: 저장소 체크아웃
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Python 환경 설정
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: '3.10'
 
@@ -28,24 +28,46 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
+      - name: 공휴일 여부 체크
+        id: holiday_check
+        run: |
+          python -c "
+          import datetime, os, holidays
+          kr_holidays = holidays.KR()
+          # 한국 시간(KST, UTC+9) 기준으로 현재 날짜 구하기
+          kst = datetime.timezone(datetime.timedelta(hours=9))
+          today = datetime.datetime.now(kst).date()
+          is_holiday = 'true' if today in kr_holidays else 'false'
+          print(f'오늘({today})은 공휴일인가? {is_holiday}')
+          if is_holiday == 'true':
+              print('오늘(' + str(today) + ')은 공휴일이므로 작업을 건너뜁니다.')
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as f:
+              f.write(f'is_holiday={is_holiday}\n')
+          "
+
       - name: config.json 파일 생성 (Secrets에서 주입)
+        if: steps.holiday_check.outputs.is_holiday == 'false'
         env:
           CONFIG_JSON: ${{ secrets.CONFIG_JSON }}
         run: |
           python -c "import os; open('config.json', 'w', encoding='utf-8').write(os.environ.get('CONFIG_JSON', '{}'))"
 
       - name: 1. sell_action.py 실행
+        if: steps.holiday_check.outputs.is_holiday == 'false'
         run: python sell_action.py
         continue-on-error: true
 
       - name: 2. delivery_order_action.py 실행
+        if: steps.holiday_check.outputs.is_holiday == 'false'
         run: python delivery_order_action.py
         continue-on-error: true
 
       - name: 3. purchase_order_action.py 실행
+        if: steps.holiday_check.outputs.is_holiday == 'false'
         run: python purchase_order_action.py
         continue-on-error: true
 
       - name: 4. erp_action.py 실행
+        if: steps.holiday_check.outputs.is_holiday == 'false'
         run: python erp_action.py
         continue-on-error: true
