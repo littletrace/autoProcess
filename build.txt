@@ -1,0 +1,10 @@
+python -m PyInstaller --onefile --name sell --collect-all selenium --collect-all webdriver_manager sell.py
+python -m PyInstaller --onefile --name delivery_order --collect-all selenium --collect-all webdriver_manager delivery_order.py
+python -m PyInstaller --onefile --name purchase_order --collect-all selenium --collect-all webdriver_manager purchase_order.py
+python -m PyInstaller --onefile --name erp --collect-all selenium --collect-all webdriver_manager erp.py
+python -m PyInstaller --onefile --name serial --console --collect-all selenium --collect-all webdriver_manager --collect-all pywinauto --collect-all comtypes --collect-all pyautogui --collect-all lxml --hidden-import=win32timezone --hidden-import=win32com.client serial.py
+python -m PyInstaller --onefile --name item_sync --collect-all selenium --collect-all webdriver_manager item_sync.py
+python -m PyInstaller --onefile --name income --collect-all selenium --collect-all webdriver_manager income.py
+python -m PyInstaller --onefile --name income_report --collect-all selenium --collect-all webdriver_manager income_report.py
+
+python -m PyInstaller --onefile --name warehouse_stock --collect-all selenium --collect-all webdriver_manager warehouse_stock.py
