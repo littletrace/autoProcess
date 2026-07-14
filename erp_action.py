@@ -167,6 +167,7 @@ def build_driver(download_dir: str) -> webdriver.Chrome:
     """
     opts = Options()
     opts.add_argument("--headless")
+    opts.add_argument("--window-size=1920,1080")
     opts.add_argument("--no-sandbox")
     opts.add_argument("--disable-dev-shm-usage")
 
